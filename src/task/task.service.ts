@@ -1,0 +1,38 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
+import { todoapp } from './entities/task.entity';
+
+@Injectable()
+export class TaskService {
+  constructor(
+    @InjectRepository(todoapp) private todoappRepository: Repository<todoapp>,
+  ) {}
+  create(createTaskDto: CreateTaskDto) {
+    const newTask = {
+      task: createTaskDto.task,
+      isCompleted: false,
+    };
+    return this.todoappRepository.save(newTask);
+  }
+
+  findAll() {
+    return this.todoappRepository.find();
+  }
+
+  findOne(id: number) {
+    return this.todoappRepository.findOneBy({ id });
+  }
+
+  update(id: number, updateTaskDto: UpdateTaskDto) {
+    return this.todoappRepository.update(id, {
+      isCompleted: updateTaskDto.isCompleted,
+    });
+  }
+
+  remove(id: number) {
+    return this.todoappRepository.delete(id);
+  }
+}
