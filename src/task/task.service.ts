@@ -3,12 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { todoapp } from './entities/task.entity';
+import { Task } from './entities/task.entity';
 
 @Injectable()
 export class TaskService {
   constructor(
-    @InjectRepository(todoapp) private todoappRepository: Repository<todoapp>,
+    @InjectRepository(Task) private todoappRepository: Repository<Task>,
   ) {}
   create(createTaskDto: CreateTaskDto) {
     const newTask = {

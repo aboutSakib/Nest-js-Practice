@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
-export class todoapp {
+export class Task {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
