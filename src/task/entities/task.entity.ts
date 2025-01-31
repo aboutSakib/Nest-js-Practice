@@ -5,10 +5,11 @@ export class Task {
   id: number;
   @Column()
   task: string;
-  @Column()
+  @Column({ name: 'is_completed' })
   isCompleted: boolean;
-  @Column()
+  @Column({ name: 'created_at' })
   CreateAt: string;
-  @Column()
+  @Column({ name: 'updated_at' })
   updatedAt: string;
 }
+

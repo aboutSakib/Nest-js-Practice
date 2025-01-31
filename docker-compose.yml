@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  todo-nest:
+    container_name: todo-nest
+    build:
+      context: .
+    command: sh -c "npm run start:dev"
+    ports:
+      - '${PORT}:${PORT}'
+    networks:
+      - todo-nest-network
+    depends_on:
+      - mysql
+    volumes:
+      - .:/user/src/app
+    restart: unless-stopped
+
+  mysql:
+    container_name: mysql
+    image: mariadb:latest
+    restart: always
+    networks:
+      - todo-nest-network
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_USER=${MYSQL_USERNAME}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_TCP_PORT=${MYSQL_PORT}
+      - TZ=Asia/Dhaka
+    ports:
+      - '${MYSQL_PORT}:${MYSQL_PORT}'
+    volumes:
+      - ./mysql_data/db:/var/lib/mysql
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    networks:
+      - todo-nest-network
+    environment:
+      - MYSQL_USERNAME=${MYSQL_USERNAME}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - PMA_HOST=mysql
+      - PMA_PORT=${MYSQL_PORT:-3306}
+    ports:
+      - ${PHPMYADMIN_PORT:-8080}:80
+    depends_on:
+      - mysql
+
+networks:
+  todo-nest-network:
+    driver: bridge
