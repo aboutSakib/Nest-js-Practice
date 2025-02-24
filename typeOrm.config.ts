@@ -1,6 +1,9 @@
 import * as dotenv from 'dotenv';
+import { Student } from './src/modules/student/entities/student.entity';
 import { DataSource } from 'typeorm';
-import { Task } from './src/task/entities/task.entity';
+import { Class } from './src/modules/class/entities/class.entity';
+import { Task } from './src/modules/task/entities/task.entity';
+
 dotenv.config();
 export default new DataSource({
   type: 'mysql',
@@ -9,7 +12,7 @@ export default new DataSource({
   username: process.env.MYSQL_USERNAME,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  entities: [Task],
+  entities: [Task, Class, Student],
   migrationsTableName: 'typeorm_migrations',
   migrations: ['src/database/migrations/*{.ts,.js}'],
 });
