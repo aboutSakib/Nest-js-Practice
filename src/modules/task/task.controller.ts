@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { TaskService } from './task.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { TaskService } from './task.service';
 
 @Controller('task')
 export class TaskController {
@@ -12,11 +21,15 @@ export class TaskController {
     return this.taskService.create(createTaskDto);
   }
 
-
-  
   @Get()
-  findAll() {
-    return this.taskService.findAll();
+  async findAll(
+    @Query('page') page: number,
+    @Query('perPage') perPage: number,
+  ) {
+    return await this.taskService.findAll(
+      page ? +page : 0,
+      perPage ? +perPage : 10,
+    );
   }
 
   @Get(':id')
